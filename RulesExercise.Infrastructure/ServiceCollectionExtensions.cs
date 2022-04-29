@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RulesExercise.Application.Rules;
+using RulesExercise.Application.Rules.Models;
 
 namespace RulesExercise.Infrastructure
 {
@@ -8,9 +8,9 @@ namespace RulesExercise.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<RulesSettings>(config =>
+            services.Configure<List<RuleSetting>>(config =>
             {
-                configuration.GetSection(nameof(RulesSettings))
+                configuration.GetSection("rules")
                 .Bind(config);
             });
 

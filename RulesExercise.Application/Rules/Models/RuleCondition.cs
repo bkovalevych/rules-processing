@@ -1,6 +1,6 @@
 ﻿using RulesExercise.Domain.Enums;
 
-namespace RulesExercise.Application.Rules
+namespace RulesExercise.Application.Rules.Models
 {
     public class RuleCondition
     {

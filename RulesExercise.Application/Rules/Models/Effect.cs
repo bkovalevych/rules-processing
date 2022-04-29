@@ -1,4 +1,4 @@
-﻿namespace RulesExercise.Application.Rules
+﻿namespace RulesExercise.Application.Rules.Models
 {
     public class Effect
     {
