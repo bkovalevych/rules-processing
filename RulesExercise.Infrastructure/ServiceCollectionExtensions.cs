@@ -1,13 +1,17 @@
 ﻿using AutoMapper.EquivalencyExpression;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using RulesExercise.Application.Interfaces.BackgroundJobHelpers;
 using RulesExercise.Application.Interfaces.Senders;
 using RulesExercise.Application.Interfaces.Templates;
 using RulesExercise.Application.Rules;
 using RulesExercise.Application.Rules.Models;
+using RulesExercise.Infrastructure.BackgroundJobService;
 using RulesExercise.Infrastructure.Persistence;
 using RulesExercise.Infrastructure.Senders;
 using RulesExercise.Infrastructure.Senders.Smtp;
@@ -47,18 +51,31 @@ namespace RulesExercise.Infrastructure
             services.AddScoped<ISenderFactory, SenderFactory>();
             services.AddScoped<TelegramSender>();
             services.AddScoped<SmtpSender>();
-            services.AddScoped(provider =>
+            services.AddSingleton(provider =>
             {
                 var options = provider.GetRequiredService<IOptions<List<RuleSetting>>>();
                 return new RulesManager(options.Value);
             });
+            AddHangFire(services);
+            services.AddScoped<IBackgroundWorkerService, BackgroundWorkerService>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             services.AddAutoMapper(assemblies)
                     .AddAutoMapper(cfg => cfg.AddCollectionMappers());
             services.AddMediatR(assemblies);
-
+           
 
             return services;
+        }
+
+        private static void AddHangFire(IServiceCollection services)
+        {
+            services.AddHangfire(gloabalConf => gloabalConf
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseMemoryStorage());
+
+            services.AddHangfireServer();
         }
     }
 }
