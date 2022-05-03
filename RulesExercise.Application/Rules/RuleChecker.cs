@@ -1,23 +1,25 @@
-﻿using RulesExercise.Application.Rules;
+﻿using RulesExercise.Application.Helpers;
+using RulesExercise.Application.Rules.Models;
 using RulesExercise.Domain.Entities;
 using RulesExercise.Domain.Enums;
 using System.Linq.Expressions;
+using System.Reflection;
 
-namespace RulesExercise.Application.Interfaces
+namespace RulesExercise.Application.Rules
 {
-    public class RulesManager
+    public class RuleChecker
     {
-        private readonly RulesSettings _rules;
-        
+        private readonly RuleSetting _rules;
+
         private readonly Func<Project, bool> _projectFilter;
 
-        public RulesManager(RulesSettings rules)
+        public RuleChecker(RuleSetting rules)
         {
             _rules = rules;
             _projectFilter = BuildExpression();
         }
 
-        public bool ProcessProject(Project project)
+        public bool CheckProject(Project project)
         {
             var result = _projectFilter(project);
             return result;
@@ -31,14 +33,14 @@ namespace RulesExercise.Application.Interfaces
             {
                 body = _rules.Conditions
                     .Aggregate(
-                        (Expression)Expression.Constant(false), 
+                        (Expression)Expression.Constant(false),
                         (prev, next) => AggregateOrHandler(prev, next, parameter));
             }
             else
             {
                 body = _rules.Conditions
                     .Aggregate(
-                        (Expression)Expression.Constant(true), 
+                        (Expression)Expression.Constant(true),
                         (prev, next) => AggregateAndHandler(prev, next, parameter));
             }
             var lambda = Expression.Lambda<Func<Project, bool>>(body, parameter);
@@ -62,17 +64,31 @@ namespace RulesExercise.Application.Interfaces
 
         private static Expression HandleRule(RuleCondition rule, ParameterExpression project)
         {
-            var field =  Expression.PropertyOrField(project, rule.Key);
-            var rawVal = Expression.Constant(rule.Val);
-            var val = Expression.Convert(rawVal, field.Type);
+            var keyInCamelCase = SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(rule.Key);
+            var field = Expression.PropertyOrField(project, keyInCamelCase);
+            var val = Project.GetParsedValue(keyInCamelCase, rule.Val);
             return rule.Condition switch
             {
                 Condition.Equal => Expression.Equal(field, val),
                 Condition.LessThan => Expression.LessThan(field, val),
                 Condition.MoreThan => Expression.GreaterThan(field, val),
-                Condition.InArray => Expression.Constant(false),// TODO: lambda for Contains 
+                Condition.InArray => CallMethodInArray(field, val),
                 _ => Expression.Constant(false),
             };
+        }
+
+        private static Expression CallMethodInArray(Expression array, Expression value)
+        {
+
+            var method = typeof(Enumerable).GetMethods()
+                .Where(m => m.Name == "Contains")
+                .Single(m => m.GetParameters().Length == 2)
+                .MakeGenericMethod(value.Type);
+            var result = Expression.Call(method,
+                array, 
+                value);
+
+            return result;
         }
     }
 }

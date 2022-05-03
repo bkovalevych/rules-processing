@@ -2,6 +2,6 @@
 {
     public interface ISender
     {
-        Task SendToAsync(string email, string header, string message);
+        Task SendMessageAsync(string header, string message);
     }
 }
