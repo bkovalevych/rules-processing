@@ -18,7 +18,7 @@ namespace RulesExercise.Domain.Entities
 
         public DateTimeOffset ModifiedAt { get; set; }
 
-        private readonly Dictionary<string, string> _values;
+        private Dictionary<string, string> _values;
         private static Dictionary<string, Func<string, Expression>> _parsers = new Dictionary<string, Func<string, Expression>>()
         {
             [nameof(Project.Id)] = val => Expression.Constant(int.Parse(val)),
@@ -32,6 +32,16 @@ namespace RulesExercise.Domain.Entities
 
         public string GetField(string key)
         {
+            _values = new Dictionary<string, string>()
+            {
+                [nameof(Project.Id)] = Id.ToString(),
+                [nameof(Project.Name)] = Name,
+                [nameof(Project.Description)] = Description,
+                [nameof(Project.Stage)] = Stage,
+                [nameof(Project.CreatedAt)] = CreatedAt.ToString(),
+                [nameof(Project.ModifiedAt)] = ModifiedAt.ToString()
+            };
+
             return _values[key];
         }
         
@@ -42,15 +52,7 @@ namespace RulesExercise.Domain.Entities
 
         public Project()
         {
-            _values = new Dictionary<string, string>()
-            {
-                [nameof(Project.Id)] = Id.ToString(),
-                [nameof(Project.Name)] = Name,
-                [nameof(Project.Description)] = Description,
-                [nameof(Project.Stage)] = Stage,
-                [nameof(Project.CreatedAt)] = CreatedAt.ToString(),
-                [nameof(Project.ModifiedAt)] = ModifiedAt.ToString()
-            };
+            
         }
     }
 }

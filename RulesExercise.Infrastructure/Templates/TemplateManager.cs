@@ -1,39 +1,61 @@
-﻿using RulesExercise.Application.Interfaces.Templates;
-using RulesExercise.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RulesExercise.Application.Interfaces.Templates;
+using RulesExercise.Infrastructure.Persistence;
+using DotLiquid.NamingConventions;
+using TemplateParser = DotLiquid.Template;
+using Template = RulesExercise.Domain.Entities.Template;
+using DotLiquid;
 
 namespace RulesExercise.Infrastructure.Templates
 {
     public class TemplateManager : ITemplateManager
     {
-        public Task<Template> AddTemplateAsync(Template template)
+        private readonly ApplicationDbContext _applicationDbContext;
+
+        public TemplateManager(ApplicationDbContext applicationDbContext)
         {
-            throw new NotImplementedException();
+            _applicationDbContext = applicationDbContext;
+            TemplateParser.NamingConvention = new CSharpNamingConvention();
+        }
+        public async Task<Template> AddTemplateAsync(Template template)
+        {
+            _applicationDbContext.Templates.Add(template);
+            await _applicationDbContext.SaveChangesAsync();
+            return template;
         }
 
-        public Task DeleteTemplateByIdAsync(int id)
+        public async Task DeleteTemplateByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var template = await _applicationDbContext.Templates.FirstOrDefaultAsync(t => t.Id == id);
+            if (template == null)
+            {
+                return;
+            }
+            _applicationDbContext.Templates.Remove(template);
+            await _applicationDbContext.SaveChangesAsync();
         }
 
-        public string FormatFromTemplate(string template, Dictionary<string, string> Values)
+        public string FormatFromTemplate(string template, Dictionary<string, object> Values)
         {
-            return string.Join("\n", Values.Values);
+            var parsedTemplate = TemplateParser.Parse(template);
+            var hashValues = Hash.FromDictionary(Values);
+            var result = parsedTemplate.Render(hashValues);
+            return result;
         }
 
         public async Task<Template> GetTemplateAsync(int id)
         {
-            return new Template()
-            {
-                Id = id,
-                Message = "",
-                Subject = "",
-                Type = "Telegram"
-            };
+            var template = await _applicationDbContext
+                .Templates
+                .FirstOrDefaultAsync(it => it.Id == id);
+            return template;
         }
 
-        public Task<Template> UpdateTemplate(Template template)
+        public async Task<Template> UpdateTemplate(Template template)
         {
-            throw new NotImplementedException();
+            _applicationDbContext.Update(template);
+            await _applicationDbContext.SaveChangesAsync();
+            return template;
         }
     }
 }
