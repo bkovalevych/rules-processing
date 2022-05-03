@@ -1,5 +1,6 @@
 ﻿using AutoMapper.EquivalencyExpression;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -7,6 +8,7 @@ using RulesExercise.Application.Interfaces.Senders;
 using RulesExercise.Application.Interfaces.Templates;
 using RulesExercise.Application.Rules;
 using RulesExercise.Application.Rules.Models;
+using RulesExercise.Infrastructure.Persistence;
 using RulesExercise.Infrastructure.Senders;
 using RulesExercise.Infrastructure.Senders.Smtp;
 using RulesExercise.Infrastructure.Senders.Telegram;
@@ -33,6 +35,14 @@ namespace RulesExercise.Infrastructure
                 configuration.GetSection(nameof(TelegramConfiguration))
                 .Bind(config);
             });
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    b => 
+                    {
+                        b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                    })
+                );
             services.AddScoped<ITemplateManager, TemplateManager>();
             services.AddScoped<ISenderFactory, SenderFactory>();
             services.AddScoped<TelegramSender>();

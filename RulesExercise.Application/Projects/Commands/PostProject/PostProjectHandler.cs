@@ -39,10 +39,13 @@ namespace RulesExercise.Application.Projects.Commands.PostProject
         private async Task ProcessEffect(Effect effect, Project project)
         {
             var template = await _templateManager.GetTemplateAsync(effect.TemplateId);
-            var values = effect.PlaceHolders.ToDictionary(it => it.Key, it => project.GetField(SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(it.Value)));
+            var values = effect.PlaceHolders.ToDictionary(
+                it => SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(it.Key), 
+                it => (object)project.GetField(SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(it.Key)));
             var subject = _templateManager.FormatFromTemplate(template.Subject, values);
             var message = _templateManager.FormatFromTemplate(template.Message, values);
-            var sender = _senderFactory.GetSenderForChannel(Channel.Telegram);
+            var typeSender = Enum.Parse<Channel>(effect.Type, true);
+            var sender = _senderFactory.GetSenderForChannel(typeSender);
             await sender.SendMessageAsync(subject, message);
         }
     }

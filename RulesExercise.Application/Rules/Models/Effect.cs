@@ -6,6 +6,6 @@
 
         public int TemplateId { get; set; }
 
-        public Dictionary<string, string> PlaceHolders { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, object> PlaceHolders { get; set; } = new Dictionary<string, object>();
     }
 }

@@ -12,6 +12,6 @@ namespace RulesExercise.Application.Interfaces.Templates
 
         Task<Template> AddTemplateAsync(Template template);
         
-        string FormatFromTemplate(string template, Dictionary<string, string> Values);
+        string FormatFromTemplate(string template, Dictionary<string, object> Values);
     }
 }

@@ -18,6 +18,6 @@ namespace RulesExercise.Infrastructure.Senders.Smtp
 
         public bool EnableSsl { get; set; }
 
-        public string Reciever { get; set; }
+        public string Receiver { get; set; }
     }
 }
