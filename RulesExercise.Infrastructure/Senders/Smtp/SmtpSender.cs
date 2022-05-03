@@ -22,9 +22,12 @@ namespace RulesExercise.Infrastructure.Senders.Smtp
         {
             var mail = new MailMessage(
                 _configuration.SenderUserName,
-                _configuration.Reciever,
+                _configuration.Receiver,
                 header,
-                message);
+                message)
+            {
+                IsBodyHtml = true
+            };
             await _client.SendMailAsync(mail);
         }
 

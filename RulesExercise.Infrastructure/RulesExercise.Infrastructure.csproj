@@ -28,4 +28,8 @@
     <ProjectReference Include="..\RulesExercise.Application\RulesExercise.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\DbFolder\" />
+  </ItemGroup>
+
 </Project>
