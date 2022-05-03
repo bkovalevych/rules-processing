@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using RulesExercise.Application.Helpers;
+using RulesExercise.Application.Interfaces.BackgroundJobHelpers;
 using RulesExercise.Application.Interfaces.Templates;
 using RulesExercise.Application.Rules;
 using RulesExercise.Application.Rules.Models;
@@ -16,13 +17,19 @@ namespace RulesExercise.Application.Projects.Commands.PostProject
         private readonly ISenderFactory _senderFactory;
         private readonly RulesManager _rulesManager;
         private readonly IMapper _mapper;
+        private readonly IBackgroundWorkerService _backgroundWorker;
 
-        public PostProjectHandler(ITemplateManager templateManager, ISenderFactory senderFactory, RulesManager rulesManager, IMapper mapper)
+        public PostProjectHandler(ITemplateManager templateManager,
+            ISenderFactory senderFactory,
+            RulesManager rulesManager,
+            IBackgroundWorkerService backgroundWorker,
+            IMapper mapper)
         {
             _templateManager = templateManager;
             _senderFactory = senderFactory;
             _rulesManager = rulesManager;
             _mapper = mapper;
+            _backgroundWorker = backgroundWorker;
         }
         public async Task<string> Handle(PostProjectCommand request, CancellationToken cancellationToken)
         {
@@ -42,11 +49,14 @@ namespace RulesExercise.Application.Projects.Commands.PostProject
             var values = effect.PlaceHolders.ToDictionary(
                 it => SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(it.Key), 
                 it => (object)project.GetField(SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(it.Key)));
+            
             var subject = _templateManager.FormatFromTemplate(template.Subject, values);
             var message = _templateManager.FormatFromTemplate(template.Message, values);
+            
             var typeSender = Enum.Parse<Channel>(effect.Type, true);
             var sender = _senderFactory.GetSenderForChannel(typeSender);
-            await sender.SendMessageAsync(subject, message);
+            
+            _backgroundWorker.Enqueue(() => sender.SendMessageAsync(subject, message));
         }
     }
 }
