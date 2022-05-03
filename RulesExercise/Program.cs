@@ -1,10 +1,18 @@
+using Newtonsoft.Json.Serialization;
 using RulesExercise.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(o =>
+    {
+        o.SerializerSettings.ContractResolver = new DefaultContractResolver()
+        {
+            NamingStrategy = new SnakeCaseNamingStrategy()
+        };
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

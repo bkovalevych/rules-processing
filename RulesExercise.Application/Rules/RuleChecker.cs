@@ -1,7 +1,9 @@
-﻿using RulesExercise.Application.Rules.Models;
+﻿using RulesExercise.Application.Helpers;
+using RulesExercise.Application.Rules.Models;
 using RulesExercise.Domain.Entities;
 using RulesExercise.Domain.Enums;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace RulesExercise.Application.Rules
 {
@@ -62,24 +64,29 @@ namespace RulesExercise.Application.Rules
 
         private static Expression HandleRule(RuleCondition rule, ParameterExpression project)
         {
-            var field = Expression.PropertyOrField(project, rule.Key);
-            var rawVal = Expression.Constant(rule.Val);
-            var val = Expression.Convert(rawVal, field.Type);
+            var keyInCamelCase = SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(rule.Key);
+            var field = Expression.PropertyOrField(project, keyInCamelCase);
+            var val = Project.GetParsedValue(keyInCamelCase, rule.Val);
             return rule.Condition switch
             {
                 Condition.Equal => Expression.Equal(field, val),
                 Condition.LessThan => Expression.LessThan(field, val),
                 Condition.MoreThan => Expression.GreaterThan(field, val),
-                Condition.InArray => CallMethodInArray(field, rawVal),
+                Condition.InArray => CallMethodInArray(field, val),
                 _ => Expression.Constant(false),
             };
         }
 
         private static Expression CallMethodInArray(Expression array, Expression value)
         {
-            var result = Expression.Call(array,
-                typeof(Enumerable)
-                .GetMethod("Contains"), value);
+
+            var method = typeof(Enumerable).GetMethods()
+                .Where(m => m.Name == "Contains")
+                .Single(m => m.GetParameters().Length == 2)
+                .MakeGenericMethod(value.Type);
+            var result = Expression.Call(method,
+                array, 
+                value);
 
             return result;
         }

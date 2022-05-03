@@ -2,7 +2,7 @@
 
 namespace RulesExercise.Application.Projects.Commands.PostProject
 {
-    public class PostProjectCommand : IRequest
+    public class PostProjectCommand : IRequest<string>
     {
         public int Id { get; set; }
 
@@ -14,8 +14,8 @@ namespace RulesExercise.Application.Projects.Commands.PostProject
 
         public List<int> Categories { get; set; } = new List<int>();
 
-        public DateTimeOffset Created_at { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
-        public DateTimeOffset Updated_at { get; set; }
+        public DateTimeOffset ModifiedAt { get; set; }
     }
 }
