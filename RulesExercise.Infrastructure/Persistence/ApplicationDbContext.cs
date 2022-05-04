@@ -7,7 +7,7 @@ namespace RulesExercise.Infrastructure.Persistence
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
         public DbSet<Template> Templates { get; set; }
 

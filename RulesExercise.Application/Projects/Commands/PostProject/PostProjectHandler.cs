@@ -40,7 +40,9 @@ namespace RulesExercise.Application.Projects.Commands.PostProject
                 await ProcessEffect(effect, project);
             }
             
-            return "ok";
+            return effects.Any() 
+                ? "rules passed"
+                : "rules did not pass";
         }
 
         private async Task ProcessEffect(Effect effect, Project project)
