@@ -3,8 +3,7 @@ using RulesExercise.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+builder.Configuration.AddJsonFile("rules.json", optional: false, reloadOnChange: true);
 builder.Services.AddControllers()
     .AddNewtonsoftJson(o =>
     {
