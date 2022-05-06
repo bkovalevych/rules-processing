@@ -14,7 +14,7 @@
 					"val": "planning"
 				},
 				{
-					"key": "created_at",
+					"key": "createdAt",
 					"condition": "lessThan",
 					"val": 1549459560
 				}
@@ -24,18 +24,18 @@
 					"type": "Telegram",
 					"templateId": 3,
 					"placeholders": {
-						"id": "id",
-						"name": "name",
-						"description": "description"
+						"Id": "Id",
+						"Name": "Name",
+						"Description": "Description"
 					}
 				},
 				{
 					"type": "Smtp",
 					"templateId": 2,
 					"placeholders": {
-						"id": "id",
-						"name": "name",
-						"description": "description"
+						"Id": "Id",
+						"Name": "Name",
+						"Description": "Description"
 					}
 				}
 			]

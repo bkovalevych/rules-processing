@@ -50,7 +50,7 @@ namespace RulesExercise.Infrastructure
                 );
             
             services.AddScoped<ITemplateManager, TemplateManager>();
-            
+            services.AddScoped<ITemplateRepository, TemplateRepository>();
             services.AddScoped<ISenderFactory, SenderFactory>();
             services.AddScoped<TelegramSender>();
             services.AddScoped<SmtpSender>();

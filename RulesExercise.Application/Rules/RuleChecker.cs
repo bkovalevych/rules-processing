@@ -64,9 +64,8 @@ namespace RulesExercise.Application.Rules
 
         private static Expression HandleRule(RuleCondition rule, ParameterExpression project)
         {
-            var keyInCamelCase = SnakeCaseToCamelCaseConverter.FromSnakeCaseToCamelCase(rule.Key);
-            var field = Expression.PropertyOrField(project, keyInCamelCase);
-            var val = Project.GetParsedValue(keyInCamelCase, rule.Val);
+            var field = Expression.PropertyOrField(project, rule.Key);
+            var val = Project.GetParsedValue(rule.Key, rule.Val);
             return rule.Condition switch
             {
                 Condition.Equal => Expression.Equal(field, val),

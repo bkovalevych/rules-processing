@@ -16,13 +16,12 @@ namespace RulesExercise.Tests
         public void Some(string template, string rawDictionary, string expectedResult)
         {
             // Arrange
-            var t = new DbContextOptions<ApplicationDbContext>();
-            var fake_context = new Mock<ApplicationDbContext>(t);
+           
             var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(rawDictionary);
             var preparedDict = dict.ToDictionary(x => x.Key, x => (object)x.Value);
             Assert.NotNull(dict);
 
-            var templateManager = new TemplateManager(fake_context.Object);
+            var templateManager = new TemplateManager();
 
             // Act
             

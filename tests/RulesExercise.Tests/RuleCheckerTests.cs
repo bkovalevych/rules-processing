@@ -2,7 +2,6 @@ using RulesExercise.Application.Helpers;
 using RulesExercise.Application.Rules;
 using RulesExercise.Application.Rules.Models;
 using RulesExercise.Domain.Entities;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Xunit;
@@ -17,7 +16,7 @@ namespace RulesExercise.Tests
                 "\"conditions\": [" +
                     "{" +
                         "\"condition\": \"inArray\"," +
-                        "\"key\": \"categories\"," +
+                        "\"key\": \"Categories\"," +
                         "\"val\": \"1\"" +
                     "}" +
                 "]" +
@@ -28,7 +27,7 @@ namespace RulesExercise.Tests
                 "\"conditions\": [" +
                     "{" +
                         "\"condition\": \"inArray\"," +
-                        "\"key\": \"categories\"," +
+                        "\"key\": \"Categories\"," +
                         "\"val\": \"5\"" +
                     "}" +
                 "]" +
@@ -40,7 +39,7 @@ namespace RulesExercise.Tests
                 "\"conditions\": [" +
                     "{" +
                         "\"condition\": \"equal\"," +
-                        "\"key\": \"id\"," +
+                        "\"key\": \"Id\"," +
                         "\"val\": \"1\"" +
                     "}" +
                 "]" +
@@ -51,7 +50,7 @@ namespace RulesExercise.Tests
                 "\"conditions\": [" +
                     "{" +
                         "\"condition\": \"equal\"," +
-                        "\"key\": \"id\"," +
+                        "\"key\": \"Id\"," +
                         "\"val\": \"1\"" +
                     "}" +
                 "]" +
@@ -63,7 +62,7 @@ namespace RulesExercise.Tests
                 "\"conditions\": [" +
                     "{" +
                         "\"condition\": \"equal\"," +
-                        "\"key\": \"name\"," +
+                        "\"key\": \"Name\"," +
                         "\"val\": \"testName\"" +
                     "}" +
                 "]" +
@@ -74,7 +73,7 @@ namespace RulesExercise.Tests
                 "\"conditions\": [" +
                     "{" +
                         "\"condition\": \"equal\"," +
-                        "\"key\": \"name\"," +
+                        "\"key\": \"Name\"," +
                         "\"val\": \"testName\"" +
                     "}" +
                 "]" +
@@ -85,7 +84,7 @@ namespace RulesExercise.Tests
                 "\"operator\": \"and\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"createdAt\"," +
+                        "\"key\": \"CreatedAt\"," +
                         "\"condition\": \"lessThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -96,7 +95,7 @@ namespace RulesExercise.Tests
                 "\"operator\": \"and\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"createdAt\"," +
+                        "\"key\": \"CreatedAt\"," +
                         "\"condition\": \"lessThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -108,7 +107,7 @@ namespace RulesExercise.Tests
                 "\"operator\": \"and\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"moreThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -119,7 +118,7 @@ namespace RulesExercise.Tests
                 "\"operator\": \"and\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"moreThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -131,12 +130,12 @@ namespace RulesExercise.Tests
                 "\"operator\": \"and\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"moreThan\"," +
                         "\"val\": \"20\"" +
                     "}," +
                     "{" +
-                        "\"key\": \"createdAt\"," +
+                        "\"key\": \"CreatedAt\"," +
                         "\"condition\": \"lessThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -147,12 +146,12 @@ namespace RulesExercise.Tests
                 "\"operator\": \"and\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"moreThan\"," +
                         "\"val\": \"20\"" +
                     "}," +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"lessThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -164,12 +163,12 @@ namespace RulesExercise.Tests
                 "\"operator\": \"or\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"moreThan\"," +
                         "\"val\": \"20\"" +
                     "}," +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"lessThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -180,12 +179,12 @@ namespace RulesExercise.Tests
                 "\"operator\": \"or\"," +
                 "\"conditions\": [" +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"equal\"," +
                         "\"val\": \"20\"" +
                     "}," +
                     "{" +
-                        "\"key\": \"modifiedAt\"," +
+                        "\"key\": \"ModifiedAt\"," +
                         "\"condition\": \"lessThan\"," +
                         "\"val\": \"20\"" +
                     "}" +
@@ -208,7 +207,7 @@ namespace RulesExercise.Tests
             Assert.NotNull(rules);
             Assert.NotNull(project);
 
-            
+
             var ruleChecker = new RuleChecker(rules);
 
             // Act

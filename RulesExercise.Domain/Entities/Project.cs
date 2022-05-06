@@ -30,7 +30,7 @@ namespace RulesExercise.Domain.Entities
             [nameof(Project.Categories)] = val => Expression.Constant(int.Parse(val))
         };
 
-        public string GetField(string key)
+        public object GetField(string key)
         {
             _values = new Dictionary<string, string>()
             {
