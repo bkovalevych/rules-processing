@@ -6,7 +6,7 @@ using Telegram.BotAPI.GettingUpdates;
 
 namespace RulesExercise.Infrastructure.Senders.Telegram
 {
-    public class TelegramSender : BaseSender
+    internal class TelegramSender : BaseSender
     {
         private readonly BotClient _botClient;
         internal override Channel Channel => Channel.Telegram;

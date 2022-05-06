@@ -24,6 +24,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
     <PackageReference Include="Telegram.BotAPI" Version="5.9.0" />
   </ItemGroup>
 
@@ -33,6 +34,21 @@
 
   <ItemGroup>
     <Folder Include="Persistence\DbFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Persistence\Configurations\SeedTemplatesResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SeedTemplatesResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Persistence\Configurations\SeedTemplatesResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SeedTemplatesResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

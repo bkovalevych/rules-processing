@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RulesExercise.Domain.Entities;
 using RulesExercise.Domain.Enums;
+using System.Resources;
 
 namespace RulesExercise.Infrastructure.Persistence.Configurations
 {
@@ -24,28 +25,14 @@ namespace RulesExercise.Infrastructure.Persistence.Configurations
                     {
                         Id = 1,
                         Type = nameof(Channel.Smtp),
-                        Message = @"
-<div>
-	<h4>Hi there from {{ Name }} project</h4>
-	<ul>
-		<li>Id : {{ Id }};</li>
-        <li>Project Changed;</li>
-	</ul> 
-</div>",
+                        Message = SeedTemplatesResources.Smtp_message_1,
                         Subject = @"Changes from {{Name}} project"
                     },
                     new Template()
                     {
                         Id = 2,
                         Type = nameof(Channel.Smtp),
-                        Message = @"
-<div>
-	<h4>Project {{ Name }} was Deleted</h4>
-	<ul>
-		<li>Id : {{ Id }};</li>
-        <li>Project Deleted;</li>
-	</ul> 
-</div>",
+                        Message = SeedTemplatesResources.Smtp_message_2,
                         Subject = @"{{ Name }} project was deleted"
                     },
                     new Template()

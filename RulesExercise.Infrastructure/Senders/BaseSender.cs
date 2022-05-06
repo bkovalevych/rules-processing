@@ -3,7 +3,7 @@ using RulesExercise.Domain.Enums;
 
 namespace RulesExercise.Infrastructure.Senders
 {
-    public abstract class BaseSender : ISender
+    internal abstract class BaseSender : ISender
     {
         internal abstract Channel Channel { get; }
         public abstract Task SendMessageAsync(string header, string message);

@@ -39,6 +39,7 @@ namespace RulesExercise.Infrastructure
                 configuration.GetSection(nameof(TelegramConfiguration))
                 .Bind(config);
             });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     configuration.GetConnectionString("DefaultConnection"),
@@ -47,22 +48,26 @@ namespace RulesExercise.Infrastructure
                         b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
                     })
                 );
+            
             services.AddScoped<ITemplateManager, TemplateManager>();
+            services.AddScoped<ITemplateRepository, TemplateRepository>();
             services.AddScoped<ISenderFactory, SenderFactory>();
             services.AddScoped<TelegramSender>();
             services.AddScoped<SmtpSender>();
+            
             services.AddSingleton(provider =>
             {
                 var options = provider.GetRequiredService<IOptions<List<RuleSetting>>>();
                 return new RulesManager(options.Value);
             });
+            
             AddHangFire(services);
             services.AddScoped<IBackgroundWorkerService, BackgroundWorkerService>();
+            
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             services.AddAutoMapper(assemblies)
                     .AddAutoMapper(cfg => cfg.AddCollectionMappers());
             services.AddMediatR(assemblies);
-           
 
             return services;
         }

@@ -5,7 +5,7 @@ using System.Net.Mail;
 
 namespace RulesExercise.Infrastructure.Senders.Smtp
 {
-    public class SmtpSender : BaseSender
+    internal class SmtpSender : BaseSender
     {
         private readonly SmtpConfiguration _configuration;
         private readonly SmtpClient _client;
