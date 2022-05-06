@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace RulesExercise.Infrastructure.Senders
 {
-    public class SenderFactory : ISenderFactory
+    internal class SenderFactory : ISenderFactory
     {
         private readonly Dictionary<Channel, ISender> _senders = new Dictionary<Channel, ISender>();
 

@@ -8,7 +8,7 @@ using DotLiquid;
 
 namespace RulesExercise.Infrastructure.Templates
 {
-    public class TemplateManager : ITemplateManager
+    internal class TemplateManager : ITemplateManager
     {
         private readonly ApplicationDbContext _applicationDbContext;
 
