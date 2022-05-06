@@ -3,8 +3,6 @@ using RulesExercise.Application.Rules.Models;
 using RulesExercise.Domain.Entities;
 using RulesExercise.Domain.Enums;
 using System.Linq.Expressions;
-using System.Reflection;
-
 namespace RulesExercise.Application.Rules
 {
     public class RuleChecker
@@ -48,21 +46,21 @@ namespace RulesExercise.Application.Rules
             return result;
         }
 
-        private static Expression AggregateAndHandler(Expression prviousState, RuleCondition rule, ParameterExpression project)
+        private Expression AggregateAndHandler(Expression prviousState, RuleCondition rule, ParameterExpression project)
         {
             var result = HandleRule(rule, project);
 
             return Expression.And(result, prviousState);
         }
 
-        private static Expression AggregateOrHandler(Expression prviousState, RuleCondition rule, ParameterExpression project)
+        private Expression AggregateOrHandler(Expression prviousState, RuleCondition rule, ParameterExpression project)
         {
             var result = HandleRule(rule, project);
 
             return Expression.Or(result, prviousState);
         }
 
-        private static Expression HandleRule(RuleCondition rule, ParameterExpression project)
+        private Expression HandleRule(RuleCondition rule, ParameterExpression project)
         {
             var field = Expression.PropertyOrField(project, rule.Key);
             var val = Project.GetParsedValue(rule.Key, rule.Val);
@@ -76,7 +74,7 @@ namespace RulesExercise.Application.Rules
             };
         }
 
-        private static Expression CallMethodInArray(Expression array, Expression value)
+        private Expression CallMethodInArray(Expression array, Expression value)
         {
 
             var method = typeof(Enumerable).GetMethods()
